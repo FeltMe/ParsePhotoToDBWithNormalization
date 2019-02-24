@@ -13,6 +13,6 @@ namespace ConsoleApp2
         [Index(IsUnique = true)]
         public string Name { get; set; }
         public int? Id_folder { get; set; }
-        public int? Id_type { get; set; }
+        public int? Id_type { get; set; } 
     }
 }
