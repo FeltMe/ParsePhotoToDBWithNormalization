@@ -64,87 +64,65 @@ namespace ConsoleApp2
 
         static void Main(string[] args)
         {
-
-            List<string> FullFiles = SafeEnumerateFiles(@"C:\Users\", "*.JPG", SearchOption.AllDirectories).ToList();
+            List<string> FullFiles = SafeEnumerateFiles(@"E:\ ", "*.JPG", SearchOption.AllDirectories).ToList();
             Console.WriteLine("Go");
-            //foreach (var item in FullFiles)
-            //{
-            //    Console.WriteLine(item);
-            //}
-            //Console.Read();
-
 
             using (var pcFiles = new PcFiles())
-
-
-
-
             {
-
-
-
-
                 foreach (var item in FullFiles)
                 {
                     string type = " ";
-                    string FName = "";
+                    //var Fname = Path.GetFileName(item);
                     for (int i = 0; i < item.Length; i++)
                     {
                         if (item[i] == '.')
                         {
                             type = item.Substring(item.Length - 4);
-                            FName = item.Substring(item.Length - 4);
+                            //Fname = item.Substring(0, item.Length - 4);
                         }
                     }
-                    try
+                    MyFileType myFileType = new MyFileType { Type = type };
+                    bool temp = pcFiles.MiesType.ToList().Contains(myFileType);
+                    if (temp == false)
                     {
-                        MyFileType myFileType = new MyFileType { Type = type };
-                        pcFiles.MiesType.Add(myFileType);
+                        pcFiles.MiesType.ToList().Add(myFileType);
                         pcFiles.SaveChanges();
-                    }
-                    catch (Exception)
-                    {
+                        Console.WriteLine("ke1111k");
 
                     }
+                         Console.WriteLine("kek");
 
-                    var l = pcFiles.MiesType.ToList();
-
-                    foreach (var t in l)
-                    {
-                    if (type == t.Type)
-                    {
-                        MyFile file = new MyFile { Name = "FName33", Id_type = 841 };
-                        Console.WriteLine(pcFiles.Entry(file).State.ToString());
-
-                        pcFiles.Mies.Add(file);
-                        Console.WriteLine(pcFiles.Entry(file).State.ToString());
-                        Console.WriteLine(file.Name);
-                        Console.WriteLine(file.Id_type);
-                        pcFiles.SaveChanges();
-                        Console.WriteLine(pcFiles.Entry(file).State.ToString());
-                    }
-                    else
-                    {
-                        MyFile file = new MyFile { Name = FName };
-                        pcFiles.Mies.Add(file);
-                        pcFiles.SaveChanges();
-                    }
-                    }
+                    //foreach (var myFile in pcFiles.MiesType.ToList())
+                    //{
+                    //
+                    //    if (type == myFile.Type)
+                    //    {
+                    //        MyFile file1 = new MyFile { Name = Fname, Id_type = myFile.Id };
+                    //        pcFiles.Mies.Add(file1);
+                    //    }
+                    //    else
+                    //    {
+                    //        MyFile file2 = new MyFile { Name = Fname };
+                    //        pcFiles.Mies.Add(file2);
+                    //    }
+                    //    pcFiles.SaveChanges();
+                    //
+                    //}
                 }
                 Console.WriteLine("Added");
             }
-            //try
-            //{
-            //    foreach (var item in FullFiles)
-            //    {
-            //        Console.WriteLine(item);
-            //    }
-            //    Console.ReadLine();
-            //}
-            //catch (Exception e)
-            //{
-            //    e.ToString();
-            //}
+           //try
+           //{
+           //    foreach (var item in FullFiles)
+           //    {
+           //        Console.WriteLine(item);
+           //    }
+           //    Console.ReadLine();
+           //}
+           //catch (Exception)
+           //{
+           //     Console.WriteLine("Write exep");
+           //}
         }
     }
 }

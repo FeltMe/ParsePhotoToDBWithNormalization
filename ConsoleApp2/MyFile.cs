@@ -19,6 +19,5 @@ namespace ConsoleApp2
         public int? Id_folder { get; set; }
         public int? Id_type { get; set; }
 
-       
     }
 }
