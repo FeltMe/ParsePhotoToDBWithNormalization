@@ -12,6 +12,7 @@ namespace ConsoleApp2
     {
         public DbSet<MyFile> Mies { get; set; }
         public DbSet<MyFileType> MiesType { get; set; }
+        public DbSet<MyFolder> MyFolders { get; set; }
         public PcFiles() : base(ConfigurationManager.ConnectionStrings["ConStr"].ConnectionString)
         {
 

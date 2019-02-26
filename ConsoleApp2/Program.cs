@@ -78,8 +78,12 @@ namespace ConsoleApp2
 
                 type = item.Substring(item.Length - 4);
                 Fname = item.Substring(0, item.Length - 4);
+                Console.WriteLine(Fname);
+                var s = item.Substring(0, (Fname.Length + type.Length));
 
+                Console.WriteLine(s);
 
+                AddFolder(FullFiles, item);
                 AddType(type);
                 FileAdd(type, Fname);
                 PritAll(FullFiles);
@@ -100,13 +104,14 @@ namespace ConsoleApp2
                 {
                     var file1 = new MyFile { Name = Fname, Id_type = myFile.Id };
                     pcFiles.Mies.Add(file1);
+                    pcFiles.SaveChanges();
                 }
                 else
                 {
                     var file2 = new MyFile { Name = Fname };
                     pcFiles.Mies.Add(file2);
+                    pcFiles.SaveChanges();
                 }
-                pcFiles.SaveChanges();
 
             }
         }
@@ -144,11 +149,19 @@ namespace ConsoleApp2
                 Console.WriteLine("Writing Exception");
             }
         }
-        static protected void AddFolder(string ppath)
+        static protected void AddFolder(List<string> Foldes, string ppath)
         {
             var pcFiles = new PcFiles();
+            ppath = ppath.Substring(0, ppath.Length - 4);
+            if (Foldes.Contains(ppath) == false)
+            {
+                var myFolder = new MyFolder { Name = ppath };
+                Foldes.Add(ppath);
+                pcFiles.MyFolders.Add(myFolder);
+                pcFiles.SaveChanges();
+            }
 
-        }   
+        }
 
     }
 }
