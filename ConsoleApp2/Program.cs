@@ -62,67 +62,93 @@ namespace ConsoleApp2
             }
         }
 
+
+
         static void Main(string[] args)
         {
-            List<string> FullFiles = SafeEnumerateFiles(@"E:\ ", "*.JPG", SearchOption.AllDirectories).ToList();
+            var FullFiles = SafeEnumerateFiles(@"C:\Users\sddrozd", "*.JPG", SearchOption.AllDirectories).ToList();
+            var Foldrs = new List<string>();
             Console.WriteLine("Go");
 
-            using (var pcFiles = new PcFiles())
+
+            foreach (var item in FullFiles)
+            {
+                string type = " ";
+                var Fname = Path.GetFileName(item);
+
+                type = item.Substring(item.Length - 4);
+                Fname = item.Substring(0, item.Length - 4);
+
+
+                AddType(type);
+                FileAdd(type, Fname);
+                PritAll(FullFiles);
+
+                Console.WriteLine("kek");
+            }
+            Console.WriteLine("Added");
+        }
+
+        static protected void FileAdd(string type, string Fname)
+        {
+            Fname = Path.GetFileName(Fname);
+            var pcFiles = new PcFiles();
+            foreach (var myFile in pcFiles.MiesType.ToList())
+            {
+
+                if (type == myFile.Type)
+                {
+                    var file1 = new MyFile { Name = Fname, Id_type = myFile.Id };
+                    pcFiles.Mies.Add(file1);
+                }
+                else
+                {
+                    var file2 = new MyFile { Name = Fname };
+                    pcFiles.Mies.Add(file2);
+                }
+                pcFiles.SaveChanges();
+
+            }
+        }
+        static protected void AddType(string type)
+        {
+            var pcFiles = new PcFiles();
+            bool IsHaveThisType = false;
+
+            foreach (var my in pcFiles.MiesType.ToList())
+            {
+                if (my.Type == type)
+                {
+                    IsHaveThisType = true;
+                }
+            }
+            if (IsHaveThisType == false)
+            {
+                var myFileType = new MyFileType { Type = type };
+                pcFiles.MiesType.Add(myFileType);
+                pcFiles.SaveChanges();
+                Console.WriteLine("ke1111k");
+            }
+        }
+        static protected void PritAll(List<string> FullFiles)
+        {
+            try
             {
                 foreach (var item in FullFiles)
                 {
-                    string type = " ";
-                    //var Fname = Path.GetFileName(item);
-                    for (int i = 0; i < item.Length; i++)
-                    {
-                        if (item[i] == '.')
-                        {
-                            type = item.Substring(item.Length - 4);
-                            //Fname = item.Substring(0, item.Length - 4);
-                        }
-                    }
-                    MyFileType myFileType = new MyFileType { Type = type };
-                    bool temp = pcFiles.MiesType.ToList().Contains(myFileType);
-                    if (temp == false)
-                    {
-                        pcFiles.MiesType.ToList().Add(myFileType);
-                        pcFiles.SaveChanges();
-                        Console.WriteLine("ke1111k");
-
-                    }
-                         Console.WriteLine("kek");
-
-                    //foreach (var myFile in pcFiles.MiesType.ToList())
-                    //{
-                    //
-                    //    if (type == myFile.Type)
-                    //    {
-                    //        MyFile file1 = new MyFile { Name = Fname, Id_type = myFile.Id };
-                    //        pcFiles.Mies.Add(file1);
-                    //    }
-                    //    else
-                    //    {
-                    //        MyFile file2 = new MyFile { Name = Fname };
-                    //        pcFiles.Mies.Add(file2);
-                    //    }
-                    //    pcFiles.SaveChanges();
-                    //
-                    //}
+                    Console.WriteLine(item);
                 }
-                Console.WriteLine("Added");
             }
-           //try
-           //{
-           //    foreach (var item in FullFiles)
-           //    {
-           //        Console.WriteLine(item);
-           //    }
-           //    Console.ReadLine();
-           //}
-           //catch (Exception)
-           //{
-           //     Console.WriteLine("Write exep");
-           //}
+            catch (Exception)
+            {
+                Console.WriteLine("Writing Exception");
+            }
         }
+        static protected void AddFolder(string ppath)
+        {
+            var pcFiles = new PcFiles();
+
+        }   
+
     }
 }
