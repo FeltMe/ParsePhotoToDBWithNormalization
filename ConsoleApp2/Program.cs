@@ -67,43 +67,28 @@ namespace ConsoleApp2
 
         static void Main(string[] args)
         {
-            var FullFiles = SafeEnumerateFiles(@"E:\", "*.JPG", SearchOption.AllDirectories).ToList();
-            Console.WriteLine("\nGo");
-            foreach (var item in FullFiles)
-            {
-                string type = " ";
-                string folder = Path.GetDirectoryName(item);
-                var Fname = Path.GetFileName(item);
-
-                type = item.Substring(item.Length - 4);
-                Fname = item.Substring(0, item.Length - 4);
-
-                AddFolder(Foldrs, item);
-                AddType(type);
-                FileAdd(type, Fname, folder);
-            }
-            PritAll(FullFiles);
-            Console.WriteLine("Added");
+            Start();
         }
 
         static protected void FileAdd(string type, string Fname, string folder)
         {
             Fname = Path.GetFileName(Fname);
+            int id_type = 0;
+            bool IsHave = false;
+            CheckForTypes(type, ref IsHave, ref id_type);
+
             using (var pcFiles = new PcFiles())
-            {
-                foreach (var myFile in pcFiles.MiesType.ToList())
+            {                
+                foreach (var fol in pcFiles.MyFolders.ToList())
                 {
-                    if (type == myFile.Type)
+                    if (folder == fol.Name)
                     {
-                        //foreach (var fol in pcFiles.MyFolders)
-                        //{
-                            //if (folder == fol.Name)
-                            //{
-                                var file1 = new MyFile { Name = Fname, Id_type = myFile.Id, /*Id_folder = fol.Id*/ };
-                                pcFiles.Mies.Add(file1);
-                                pcFiles.SaveChanges();
-                            //}
-                        //}
+                        if (IsHave == true)
+                        {
+                            var file = new MyFile { Name = Fname, Id_type = id_type, Id_folder = fol.Id };
+                            pcFiles.Mies.Add(file);
+                            pcFiles.SaveChanges();
+                        }
                     }
                 }
             }
@@ -157,6 +142,40 @@ namespace ConsoleApp2
                     pcFiles.SaveChanges();
                 }
             }
+        }
+        static protected void CheckForTypes(string type, ref bool have, ref int id_type)
+        {
+            using (PcFiles pcFiles = new PcFiles())
+            {
+                foreach (var myFile in pcFiles.MiesType.ToList())
+                {
+                    if (type == myFile.Type)
+                    {
+                        id_type = myFile.Id;
+                        have = true;
+                    }
+                }
+            }
+        }
+        static public void Start()
+        {
+            var FullFiles = SafeEnumerateFiles(@"C:\Users\sddrozd", "*.JPG", SearchOption.AllDirectories).ToList();
+            Console.WriteLine("\nGo");
+            foreach (var item in FullFiles)
+            {
+                string type = " ";
+                string folder = Path.GetDirectoryName(item);
+                var Fname = Path.GetFileName(item);
+
+                type = item.Substring(item.Length - 4);
+                Fname = item.Substring(0, item.Length - 4);
+
+                AddFolder(Foldrs, item);
+                AddType(type);
+                FileAdd(type, Fname, folder);
+            }
+            PritAll(FullFiles);
+            Console.WriteLine("Added");
         }
     }
 }
