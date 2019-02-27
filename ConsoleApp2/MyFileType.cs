@@ -12,8 +12,6 @@ namespace ConsoleApp2
     {
         [Key]
         public int Id { get; set; }
-        [StringLength(450)]
-        [Index(IsUnique = true)]
         public string Type { get; set; }
     }
 }
